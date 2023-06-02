@@ -14,13 +14,24 @@ namespace R5T.F0119
     [FunctionalityMarker]
     public partial interface IInstanceDescriptorOperator : IFunctionalityMarker
     {
-        public IEnumerable<InstanceDescriptor> WhereIs(
+        public IEnumerable<InstanceDescriptor> WhereIsOneOf(
             IEnumerable<InstanceDescriptor> instanceDescriptors,
-            params IInstanceVarietyName[] instanceVarietyNames)
+            IEnumerable<IInstanceVarietyName> instanceVarietyNames)
         {
             var output = instanceDescriptors
                 .Where(x => instanceVarietyNames.Contains(x.InstanceVarietyName))
                 ;
+
+            return output;
+        }
+
+        public IEnumerable<InstanceDescriptor> WhereIs(
+            IEnumerable<InstanceDescriptor> instanceDescriptors,
+            params IInstanceVarietyName[] instanceVarietyNames)
+        {
+            var output = this.WhereIsOneOf(
+                instanceDescriptors,
+                instanceVarietyNames.AsEnumerable());
 
             return output;
         }

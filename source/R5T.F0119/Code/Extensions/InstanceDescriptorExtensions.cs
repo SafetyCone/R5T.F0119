@@ -9,6 +9,14 @@ namespace R5T.F0119.Extensions
 {
     public static class InstanceDescriptorExtensions
     {
+        public static IEnumerable<InstanceDescriptor> WhereIsOneOf(this IEnumerable<InstanceDescriptor> instanceDescriptors,
+            IEnumerable<IInstanceVarietyName> instanceVarietyNames)
+        {
+            return Instances.InstanceDescriptorOperator.WhereIsOneOf(
+                instanceDescriptors,
+                instanceVarietyNames);
+        }
+
         public static IEnumerable<InstanceDescriptor> WhereIs(this IEnumerable<InstanceDescriptor> instanceDescriptors,
             IInstanceVarietyName instanceVarietyName)
         {
