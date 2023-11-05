@@ -4,6 +4,7 @@ using System.Linq;
 
 using R5T.T0132;
 using R5T.T0161;
+using R5T.T0161.Extensions;
 using R5T.T0170;
 
 
@@ -14,7 +15,7 @@ namespace R5T.F0119
     {
         public IKindMarkedFullMemberName GetInstanceName(InstanceDescriptor instance)
         {
-            var name = instance.KindMarkedFullMemberName;
+            var name = instance.IdentityString.Value.ToKindMarkedFullMemberName();
             return name;
         }
 

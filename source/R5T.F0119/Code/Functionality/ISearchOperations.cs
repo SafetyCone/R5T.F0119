@@ -8,6 +8,8 @@ using R5T.T0161;
 using R5T.T0161.Extensions;
 using R5T.T0170;
 
+using InstanceDescriptor = R5T.T0170.InstanceDescriptor;
+
 
 namespace R5T.F0119
 {
@@ -45,7 +47,7 @@ namespace R5T.F0119
                 .Where(x =>
                 {
                     // Values might be either methods or properties (used to just be properties, but with operations values, values can also be methods).
-                    var kindMarkedFullMemberName = x.KindMarkedFullMemberName;
+                    var kindMarkedFullMemberName = x.IdentityString.Value.ToKindMarkedFullMemberName();
 
                     // Error if the kind is not a method or property.
                     Instances.MemberNameOperator.Verify_Is_KindOneOf(
@@ -94,7 +96,7 @@ namespace R5T.F0119
                 .Where(x =>
                 {
                     // Values might be either methods or properties (used to just be properties, but with operations values, values can also be methods).
-                    var kindMarkedFullMemberName = x.KindMarkedFullMemberName;
+                    var kindMarkedFullMemberName = x.IdentityString.Value.ToKindMarkedFullMemberName();
 
                     // Error if the kind is not a method.
                     Instances.MemberNameOperator.Verify_Is_KindOneOf(
@@ -148,7 +150,7 @@ namespace R5T.F0119
                 .Where(x =>
                 {
                     // Values might be either methods or properties (used to just be properties, but with operations values, values can also be methods).
-                    var kindMarkedFullMemberName = x.KindMarkedFullMemberName;
+                    var kindMarkedFullMemberName = x.IdentityString.Value.ToKindMarkedFullMemberName();
 
                     // Error if the kind is not a method or property.
                     Instances.MemberNameOperator.Verify_Is_KindOneOf(
@@ -189,7 +191,7 @@ namespace R5T.F0119
                 .WhereIsFunction()
                 .Where(x =>
                 {
-                    var methodName = x.KindMarkedFullMemberName.Value.ToKindMarkedFullMethodName();
+                    var methodName = x.IdentityString.Value.ToKindMarkedFullMethodName();
 
                     var (simplestMethodName, _, _, _, _) = Instances.MemberNameOperator.Get_SimplestMethodName(methodName);
 
@@ -218,7 +220,7 @@ namespace R5T.F0119
                 .WhereIsValue()
                 .Where(x =>
                 {
-                    var kindMarkedFullPropertyName = x.KindMarkedFullMemberName.Value.ToKindMarkedFullPropertyName();
+                    var kindMarkedFullPropertyName = x.IdentityString.Value.ToKindMarkedFullPropertyName();
 
                     var (simpleTypeName, namespacedTypeName, namespacedTypedPropertyName, fullPropertyName)
                     = Instances.MemberNameOperator.Get_SimpleTypeName(kindMarkedFullPropertyName);
@@ -248,7 +250,7 @@ namespace R5T.F0119
                 .WhereIsValue()
                 .Where(x =>
                 {
-                    var kindMarkedFullPropertyName = x.KindMarkedFullMemberName.Value.ToKindMarkedFullPropertyName();
+                    var kindMarkedFullPropertyName = x.IdentityString.Value.ToKindMarkedFullPropertyName();
 
                     var (_, _, namespacedTypedPropertyName, _)
                         = Instances.MemberNameOperator.Get_SimpleTypeName(kindMarkedFullPropertyName);
@@ -279,7 +281,7 @@ namespace R5T.F0119
                 .WhereIsValue()
                 .Where(x =>
                 {
-                    var kindMarkedFullPropertyName = x.KindMarkedFullMemberName.Value.ToKindMarkedFullPropertyName();
+                    var kindMarkedFullPropertyName = x.IdentityString.Value.ToKindMarkedFullPropertyName();
 
                     var (_, _, _, fullPropertyName)
                         = Instances.MemberNameOperator.Get_SimpleTypeName(kindMarkedFullPropertyName);
