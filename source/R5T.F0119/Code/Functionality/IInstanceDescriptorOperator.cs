@@ -45,6 +45,10 @@ namespace R5T.F0119
             return output;
         }
 
+        /// <summary>
+        /// Values include both property member types and methods.
+        /// (See R5T.Z0057.IInstanceVarietyDescriptors.Values.)
+        /// </summary>
         public IEnumerable<InstanceDescriptor> WhereIsValue(IEnumerable<InstanceDescriptor> instanceDescriptors)
         {
             var output = instanceDescriptors

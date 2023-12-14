@@ -30,6 +30,7 @@ namespace R5T.F0119.Extensions
             return Instances.InstanceDescriptorOperator.WhereIsFunction(instanceDescriptors);
         }
 
+        /// <inheritdoc cref="IInstanceDescriptorOperator.WhereIsValue(IEnumerable{InstanceDescriptor})"/>
         public static IEnumerable<InstanceDescriptor> WhereIsValue(this IEnumerable<InstanceDescriptor> instanceDescriptors)
         {
             return Instances.InstanceDescriptorOperator.WhereIsValue(instanceDescriptors);
