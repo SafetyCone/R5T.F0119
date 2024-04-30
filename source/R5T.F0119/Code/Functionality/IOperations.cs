@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using R5T.L0065.T000;
 using R5T.T0132;
 using R5T.T0161;
 using R5T.T0161.Extensions;
@@ -13,6 +14,13 @@ namespace R5T.F0119
     [FunctionalityMarker]
     public partial interface IOperations : IFunctionalityMarker
     {
+        public Signature CheckSignatureType_ForValues(Signature signature) => signature switch
+        {
+            PropertySignature propertySignature => propertySignature,
+            MethodSignature methodSignature => methodSignature,
+            _ => throw Instances.SwitchOperator.Get_UnrecognizedSwitchTypeExpression(signature)
+        };
+
         public IKindMarkedFullMemberName GetInstanceName(InstanceDescriptor instance)
         {
             var name = instance.IdentityString.Value.ToKindMarkedFullMemberName();

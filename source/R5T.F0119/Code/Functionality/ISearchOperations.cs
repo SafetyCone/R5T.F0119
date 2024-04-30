@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using R5T.F0119.Extensions;
 using R5T.L0065.T000;
 using R5T.T0132;
 using R5T.T0161;
-using R5T.T0161.Extensions;
-using R5T.T0170;
+
+using R5T.F0119.Extensions;
 
 using InstanceDescriptor = R5T.T0170.InstanceDescriptor;
 
@@ -17,6 +16,48 @@ namespace R5T.F0119
     [FunctionalityMarker]
     public partial interface ISearchOperations : IFunctionalityMarker
     {
+        public InstanceDescriptor[] List_Values_OfInstanceType(
+            IEnumerable<InstanceDescriptor> instanceDescriptors,
+            string valueInstanceTypeNamespacedTypeName,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+        {
+            var declaringTypeNamespacedTypeNamePredicate = Instances.SearchOperator.Get_TypeNamespacedTypeName_Is(valueInstanceTypeNamespacedTypeName);
+
+            var output = instanceDescriptors
+                .Values(includeObsolete, includeDrafts)
+                .Select(Instances.Selectors.SignatureAndInstanceSelector_ForValues)
+                .Select(Instances.Selectors.DeclaringTypeSignatureAndInstanceSelector_ForValues)
+                .Where(x => declaringTypeNamespacedTypeNamePredicate(x.TypeSignature))
+                .Select(x => x.InstanceDescriptor)
+                .Now();
+
+            return output;
+        }
+
+        public string[] List_ValueInstanceTypes_WithInstanceTypeNameContaining(
+            IEnumerable<InstanceDescriptor> instanceDescriptors,
+            string typeNameSearchTerm,
+            bool capitalizationSensitive = false,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+        {
+            var instanceTypeNameContainsSearchTermPredicate = Instances.SearchOperator.Get_TextContainsSearchTermPredicate(
+                typeNameSearchTerm,
+                capitalizationSensitive);
+
+            var output = instanceDescriptors
+                .Values(includeObsolete, includeDrafts)
+                .Select(Instances.Selectors.SignatureSelector_ForValues)
+                .Select(Instances.Selectors.DeclaringTypeSignatureSelector_ForValues)
+                .Where(x => instanceTypeNameContainsSearchTermPredicate(x.TypeName))
+                .Select(Instances.Selectors.NamespacedTypeNameSelector)
+                .Distinct()
+                .Now();
+
+            return output;
+        }
+
         /// <summary>
         /// Find all values with names containing a search term.
         /// </summary>
@@ -127,7 +168,7 @@ namespace R5T.F0119
         /// <summary>
         /// Find all values with names containing a search term.
         /// </summary>
-        public InstanceDescriptor[] List_Values_WithNameContaining(
+        public InstanceDescriptor[] List_Values_WithValueNameContaining(
             IEnumerable<InstanceDescriptor> instanceDescriptors,
             string valueNameSearchTerm,
             bool capitalizationSensitive = false)
@@ -173,7 +214,7 @@ namespace R5T.F0119
         /// <summary>
         /// List all functionality with a method name containing a search term.
         /// </summary>
-        public InstanceDescriptor[] List_Functionality_WithMethodNameContaining(
+        public InstanceDescriptor[] List_Functions_WithMethodNameContaining(
             IEnumerable<InstanceDescriptor> instanceDescriptors,
             string methodNameSearchTerm,
             bool capitalizationSensitive = false)

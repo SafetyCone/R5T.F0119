@@ -4,7 +4,6 @@ using System.Linq;
 
 using R5T.T0132;
 using R5T.T0170;
-using R5T.T0171;
 
 using R5T.F0119.Extensions;
 
@@ -14,9 +13,24 @@ namespace R5T.F0119
     [FunctionalityMarker]
     public partial interface IInstanceDescriptorOperator : IFunctionalityMarker
     {
+        public Func<InstanceDescriptor, bool> Get_SignatureStringValue_Contains(string searchText)
+            => instanceDescriptor => this.SignatureStringValue_Contains(
+                instanceDescriptor, searchText);
+
+        public bool SignatureStringValue_Contains(
+            InstanceDescriptor instanceDescriptor,
+            string searchText)
+            => instanceDescriptor.SignatureString.Value.Contains(searchText, StringComparison.InvariantCultureIgnoreCase);
+
+        public Func<InstanceDescriptor, bool> Get_Is_InstanceVarietyPredicate(T0171.IInstanceVarietyName instanceVarietyName)
+            => this.Get_Is_InstanceVarietyPredicate(instanceVarietyName.Value);
+
+        public Func<InstanceDescriptor, bool> Get_Is_InstanceVarietyPredicate(string instanceVarietyName)
+            => instanceDescriptor => instanceDescriptor.InstanceVarietyName.Value == instanceVarietyName;
+
         public IEnumerable<InstanceDescriptor> WhereIsOneOf(
             IEnumerable<InstanceDescriptor> instanceDescriptors,
-            IEnumerable<IInstanceVarietyName> instanceVarietyNames)
+            IEnumerable<T0171.IInstanceVarietyName> instanceVarietyNames)
         {
             var output = instanceDescriptors
                 .Where(x => instanceVarietyNames.Contains(x.InstanceVarietyName))
@@ -27,7 +41,7 @@ namespace R5T.F0119
 
         public IEnumerable<InstanceDescriptor> WhereIs(
             IEnumerable<InstanceDescriptor> instanceDescriptors,
-            params IInstanceVarietyName[] instanceVarietyNames)
+            params T0171.IInstanceVarietyName[] instanceVarietyNames)
         {
             var output = this.WhereIsOneOf(
                 instanceDescriptors,
