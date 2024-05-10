@@ -209,7 +209,6 @@ namespace R5T.F0119
             return output;
         }
 
-
         public Func<IEnumerable<InstanceDescriptor>, InstanceDescriptor[]> Get_List_Functions_ContainingText_ByRegex(
             string regexPattern,
             bool includeObsolete = true,
@@ -245,7 +244,6 @@ namespace R5T.F0119
             return output;
         }
 
-
         public Func<IEnumerable<InstanceDescriptor>, InstanceDescriptor[]> Get_List_Functions_ContainingText(
             string searchText,
             bool includeObsolete = true,
@@ -268,6 +266,67 @@ namespace R5T.F0119
                 .Of_InstanceVariety(
                     Instances.InstanceVarietyNames.Functions,
                     Instances.InstanceVarietyNames.FunctionDrafts,
+                    includeObsolete,
+                    includeDrafts)
+                .Where(signatureStringValueContainsSearchText)
+                .Now()
+                ;
+
+            return output;
+        }
+
+        public Func<IEnumerable<InstanceDescriptor>, InstanceDescriptor[]> Get_List_Demonstrations_ContainingText(
+            string searchText,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+            => instanceDescriptors => this.List_Demonstrations_ContainingText(
+                instanceDescriptors,
+                searchText,
+                includeObsolete,
+                includeDrafts);
+
+        public InstanceDescriptor[] List_Demonstrations_ContainingText(
+            IEnumerable<InstanceDescriptor> instanceDescriptors,
+            string searchText,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+        {
+            var signatureStringValueContainsSearchText = Instances.InstanceDescriptorOperator.Get_SignatureStringValue_Contains(searchText);
+
+            var output = instanceDescriptors
+                .Of_InstanceVariety(
+                    Instances.InstanceVarietyNames.Demonstrations,
+                    Instances.InstanceVarietyNames.DemonstrationDrafts,
+                    includeObsolete,
+                    includeDrafts)
+                .Where(signatureStringValueContainsSearchText)
+                .Now()
+                ;
+
+            return output;
+        }
+
+        public Func<IEnumerable<InstanceDescriptor>, InstanceDescriptor[]> Get_List_Scripts_ContainingText(
+            string searchText,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+            => instanceDescriptors => this.List_Scripts_ContainingText(
+                instanceDescriptors,
+                searchText,
+                includeObsolete,
+                includeDrafts);
+
+        public InstanceDescriptor[] List_Scripts_ContainingText(
+            IEnumerable<InstanceDescriptor> instanceDescriptors,
+            string searchText,
+            bool includeObsolete = true,
+            bool includeDrafts = true)
+        {
+            var signatureStringValueContainsSearchText = Instances.InstanceDescriptorOperator.Get_SignatureStringValue_Contains(searchText);
+
+            var output = instanceDescriptors
+                .Of_InstanceVariety(
+                    Instances.InstanceVarietyNames.Scripts,
                     includeObsolete,
                     includeDrafts)
                 .Where(signatureStringValueContainsSearchText)

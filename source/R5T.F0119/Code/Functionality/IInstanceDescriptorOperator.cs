@@ -15,7 +15,8 @@ namespace R5T.F0119
     {
         public Func<InstanceDescriptor, bool> Get_SignatureStringValue_Contains(string searchText)
             => instanceDescriptor => this.SignatureStringValue_Contains(
-                instanceDescriptor, searchText);
+                instanceDescriptor,
+                searchText);
 
         public bool SignatureStringValue_Contains(
             InstanceDescriptor instanceDescriptor,
